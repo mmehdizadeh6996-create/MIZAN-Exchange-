@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIZAN Exchange — Business Bay, Dubai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10151B;
+    --paper:#F6F3EC;
+    --paper-dim:#EDE8DC;
+    --brass:#B08D57;
+    --emerald:#0F6E5C;
+    --gray:#8A8580;
+    --line: rgba(16,21,27,0.12);
+    --line-dark: rgba(246,243,236,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Instrument Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .display{font-family:'Outfit',sans-serif;}
+  ::selection{background:var(--brass); color:var(--ink);}
+  :focus-visible{outline:2px solid var(--brass); outline-offset:3px;}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,243,236,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:18px 32px; max-width:1180px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand svg{width:30px; height:20px;}
+  .brand .name{font-family:'Outfit',sans-serif; font-weight:700; font-size:17px; letter-spacing:.01em;}
+  .brand .name b{color:var(--brass); font-weight:700;}
+  .nav-links{display:flex; gap:34px; font-size:14.5px;}
+  .nav-links a{color:var(--ink); opacity:.75; transition:opacity .15s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.03em;
+    background:var(--ink); color:var(--paper); padding:11px 20px; border-radius:3px;
+    border:1px solid var(--ink);
+  }
+  .nav-cta:hover{background:transparent; color:var(--ink);}
+  .nav-toggle{display:none;}
+  @media(max-width:840px){
+    .nav-links{display:none;}
+    .nav-inner{padding:16px 20px;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:76px 0 0;}
+  .hero-grid{display:grid; grid-template-columns:1.15fr 1fr; gap:56px; align-items:start;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+
+  .hero h1{
+    font-size:clamp(36px,4.6vw,58px); font-weight:600; line-height:1.08;
+    letter-spacing:-0.01em; max-width:620px;
+  }
+  .hero p.sub{
+    margin-top:22px; font-size:17px; color:#3a3a38; max-width:440px; line-height:1.7;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .btn{
+    font-size:14.5px; padding:14px 24px; border-radius:3px; border:1px solid var(--ink);
+    display:inline-flex; align-items:center; gap:8px; transition:all .15s;
+  }
+  .btn-primary{background:var(--ink); color:var(--paper);}
+  .btn-primary:hover{background:transparent; color:var(--ink);}
+  .btn-ghost{background:transparent; color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink); color:var(--paper);}
+
+  .hero-note{margin-top:40px; padding-top:20px; border-top:1px solid var(--line); font-size:13px; color:var(--gray); max-width:440px;}
+
+  /* rate board */
+  .board{background:var(--ink); color:var(--paper); border-radius:6px; overflow:hidden;}
+  .board-head{padding:20px 22px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line-dark);}
+  .board-head .t{font-size:13px; letter-spacing:.04em; color:var(--paper);}
+  .board-head .ts{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gray);}
+  .board-rows{padding:6px 22px 18px;}
+  .board-row{display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--line-dark);}
+  .board-row:last-child{border-bottom:none;}
+  .cur{display:flex; align-items:baseline; gap:10px;}
+  .cur .code{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; letter-spacing:.03em;}
+  .cur .label{font-size:12px; color:var(--gray);}
+  .rate{display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:14.5px;}
+  .tick{font-size:10px;}
+  .tick.up{color:var(--emerald);}
+  .tick.down{color:var(--brass);}
+
+  /* ticker */
+  .ticker-band{
+    background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    overflow:hidden; margin-top:64px; white-space:nowrap;
+  }
+  .ticker-track{display:inline-flex; animation:scroll 32s linear infinite;}
+  .ticker-track span{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:14px 28px; color:var(--ink);
+    border-right:1px solid var(--line); display:inline-flex; gap:10px;
+  }
+  .ticker-track span b{color:var(--brass); font-weight:600;}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  @media(prefers-reduced-motion: reduce){.ticker-track{animation:none;}}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:560px; margin-bottom:52px;}
+  .section-head h2{font-size:clamp(26px,3vw,34px); font-weight:600; letter-spacing:-0.01em;}
+  .section-head p{margin-top:14px; color:var(--gray); font-size:15.5px; line-height:1.7;}
+
+  /* services as ledger rows */
+  .ledger{border-top:1px solid var(--line);}
+  .ledger-row{
+    display:grid; grid-template-columns:120px 1fr 1.4fr; gap:28px; padding:30px 0;
+    border-bottom:1px solid var(--line); align-items:baseline;
+  }
+  .ledger-row .tag{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--brass); letter-spacing:.04em; padding-top:3px;}
+  .ledger-row h3{font-family:'Outfit',sans-serif; font-size:20px; font-weight:600;}
+  .ledger-row p{color:#4a4a48; font-size:14.5px; line-height:1.7;}
+  @media(max-width:760px){
+    .ledger-row{grid-template-columns:1fr; gap:8px;}
+  }
+
+  /* stats */
+  .stats{background:var(--ink); color:var(--paper); border-radius:6px; padding:52px 44px; display:grid; grid-template-columns:repeat(4,1fr); gap:36px;}
+  .stat .num{font-family:'Outfit',sans-serif; font-size:38px; font-weight:600; color:var(--brass);}
+  .stat .lbl{font-family:'IBM Plex Mono',monospace; font-size:12px; color:rgba(246,243,236,0.65); margin-top:8px; line-height:1.6;}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr; padding:36px 26px;}}
+
+  /* locations */
+  .loc-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  @media(max-width:900px){.loc-grid{grid-template-columns:1fr;}}
+  .loc-details dt{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--brass); letter-spacing:.05em; margin-top:24px;}
+  .loc-details dt:first-child{margin-top:0;}
+  .loc-details dd{font-size:16px; margin-top:6px; line-height:1.6;}
+  .skyline{background:var(--paper-dim); border:1px solid var(--line); border-radius:6px; padding:40px 30px 0; overflow:hidden;}
+  .skyline svg{width:100%; height:auto;}
+
+  /* contact CTA */
+  .cta-band{background:var(--ink); color:var(--paper); border-radius:6px; padding:60px 48px; text-align:left; display:flex; justify-content:space-between; align-items:center; gap:30px; flex-wrap:wrap;}
+  .cta-band h2{font-family:'Outfit',sans-serif; font-size:clamp(24px,3vw,32px); font-weight:600; max-width:480px;}
+  .cta-band .btn-primary{background:var(--brass); border-color:var(--brass); color:var(--ink);}
+  .cta-band .btn-primary:hover{background:transparent; color:var(--paper);}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:52px 0 32px;}
+  .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px;}
+  .foot-brand .brand{margin-bottom:14px;}
+  .foot-brand p{font-size:13.5px; color:var(--gray); max-width:260px; line-height:1.7;}
+  .foot-col h4{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.05em; color:var(--brass); margin-bottom:14px;}
+  .foot-col a, .foot-col div{display:block; font-size:14px; color:#3a3a38; margin-bottom:9px;}
+  .foot-bottom{margin-top:48px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--gray); font-family:'IBM Plex Mono',monospace; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg viewBox="0 0 120 80" fill="none" stroke="#B08D57" stroke-width="4.5" stroke-linecap="round">
+        <line x1="12" y1="22" x2="108" y2="22"/>
+        <path d="M60 22 L52 34 L68 34 Z" fill="#B08D57" stroke="none"/>
+        <line x1="24" y1="22" x2="24" y2="38"/>
+        <line x1="96" y1="22" x2="96" y2="42"/>
+        <path d="M12 38 A12 8 0 0 0 36 38"/>
+        <path d="M82 42 A14 9 0 0 0 110 42"/>
+      </svg>
+      <span class="name">MIZ<b>AN</b></span>
+    </div>
+    <nav class="nav-links">
+      <a href="#rates">Rates</a>
+      <a href="#services">Services</a>
+      <a href="#locations">Locations</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="nav-cta">GET A QUOTE</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <h1>The rate you see<br>is the rate you get.</h1>
+          <p class="sub">No hidden margins folded into the numbers, no surprise fee at the counter. Check the board, walk in, exchange — that's the whole process.</p>
+          <div class="hero-ctas">
+            <a href="#locations" class="btn btn-primary">Get directions to Business Bay</a>
+            <a href="#rates" class="btn btn-ghost">View today's rates</a>
+          </div>
+          <div class="hero-note">Open daily, 9:00–23:00 · Cash, transfers and corporate accounts handled at the same counter.</div>
+        </div>
+
+        <div class="board" id="rates">
+          <div class="board-head">
+            <span class="t">Today's board</span>
+            <span class="ts mono">UPDATED 15 MIN AGO</span>
+          </div>
+          <div class="board-rows">
+            <div class="board-row">
+              <div class="cur"><span class="code">USD</span><span class="label">US Dollar</span></div>
+              <div class="rate"><span class="tick up">▲</span>3.6730</div>
+            </div>
+            <div class="board-row">
+              <div class="cur"><span class="code">EUR</span><span class="label">Euro</span></div>
+              <div class="rate"><span class="tick up">▲</span>3.9841</div>
+            </div>
+            <div class="board-row">
+              <div class="cur"><span class="code">GBP</span><span class="label">British Pound</span></div>
+              <div class="rate"><span class="tick down">▼</span>4.6602</div>
+            </div>
+            <div class="board-row">
+              <div class="cur"><span class="code">INR</span><span class="label">Indian Rupee</span></div>
+              <div class="rate"><span class="tick up">▲</span>0.04398</div>
+            </div>
+            <div class="board-row">
+              <div class="cur"><span class="code">IRR</span><span class="label">Iranian Rial</span></div>
+              <div class="rate"><span class="tick down">▼</span>0.0000876</div>
+            </div>
+            <div class="board-row">
+              <div class="cur"><span class="code">CNY</span><span class="label">Chinese Yuan</span></div>
+              <div class="rate"><span class="tick up">▲</span>0.5104</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticker-band">
+      <div class="ticker-track" aria-hidden="true">
+        <span><b>USD</b> 3.6730 / 3.6690</span>
+        <span><b>EUR</b> 3.9841 / 3.9790</span>
+        <span><b>GBP</b> 4.6602 / 4.6540</span>
+        <span><b>INR</b> 0.04398 / 0.04370</span>
+        <span><b>IRR</b> 0.0000876 / 0.0000861</span>
+        <span><b>CNY</b> 0.5104 / 0.5071</span>
+        <span><b>USD</b> 3.6730 / 3.6690</span>
+        <span><b>EUR</b> 3.9841 / 3.9790</span>
+        <span><b>GBP</b> 4.6602 / 4.6540</span>
+        <span><b>INR</b> 0.04398 / 0.04370</span>
+        <span><b>IRR</b> 0.0000876 / 0.0000861</span>
+        <span><b>CNY</b> 0.5104 / 0.5071</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>One counter, four ways to move money</h2>
+        <p>Whether you're changing holiday cash or paying an overseas supplier, it's handled at the same branch by the same team.</p>
+      </div>
+      <div class="ledger">
+        <div class="ledger-row">
+          <div class="tag mono">CASH</div>
+          <h3>Cash exchange</h3>
+          <p>Walk-in exchange for 30+ currencies. Notes are checked and counted in front of you, and the rate on the board is the rate you're charged.</p>
+        </div>
+        <div class="ledger-row">
+          <div class="tag mono">TRANSFER</div>
+          <h3>Wire transfers</h3>
+          <p>Send money abroad same-day on major corridors, with tracking from the moment you send to the moment it lands.</p>
+        </div>
+        <div class="ledger-row">
+          <div class="tag mono">CORPORATE</div>
+          <h3>Corporate accounts</h3>
+          <p>A dedicated account and locked-in rates for businesses paying overseas suppliers, contractors or payroll on a schedule.</p>
+        </div>
+        <div class="ledger-row">
+          <div class="tag mono">FORWARD</div>
+          <h3>Bulk &amp; forward booking</h3>
+          <p>Reserve today's rate for up to 30 days ahead, so a large or planned exchange isn't left to chance on the day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat">
+          <div class="num">30+</div>
+          <div class="lbl">CURRENCIES HELD<br>IN-BRANCH</div>
+        </div>
+        <div class="stat">
+          <div class="num">15 min</div>
+          <div class="lbl">AVERAGE TIME<br>AT THE COUNTER</div>
+        </div>
+        <div class="stat">
+          <div class="num">0%</div>
+          <div class="lbl">MARGIN HIDDEN<br>IN THE RATE</div>
+        </div>
+        <div class="stat">
+          <div class="num">7</div>
+          <div class="lbl">DAYS A WEEK,<br>9:00–23:00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section id="locations">
+    <div class="wrap">
+      <div class="loc-grid">
+        <div class="loc-details">
+          <div class="section-head" style="margin-bottom:32px;">
+            <h2>Visit the Business Bay branch</h2>
+          </div>
+          <dl>
+            <dt class="mono">ADDRESS</dt>
+            <dd>Business Bay, Dubai, United Arab Emirates</dd>
+            <dt class="mono">HOURS</dt>
+            <dd>Daily, 9:00 AM – 11:00 PM</dd>
+            <dt class="mono">PHONE</dt>
+            <dd><a href="tel:+971501517381">+971 50 151 7381</a></dd>
+            <dt class="mono">ON ARRIVAL</dt>
+            <dd>Bring a passport or Emirates ID for any exchange over AED 3,500.</dd>
+          </dl>
+        </div>
+        <div class="skyline">
+          <svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMax meet">
+            <rect x="10" y="120" width="30" height="100" fill="#10151B" opacity="0.85"/>
+            <rect x="46" y="70" width="24" height="150" fill="#10151B" opacity="0.75"/>
+            <rect x="76" y="100" width="34" height="120" fill="#10151B" opacity="0.9"/>
+            <rect x="116" y="40" width="20" height="180" fill="#B08D57"/>
+            <rect x="142" y="90" width="30" height="130" fill="#10151B" opacity="0.8"/>
+            <rect x="178" y="60" width="26" height="160" fill="#10151B" opacity="0.7"/>
+            <rect x="210" y="110" width="22" height="110" fill="#10151B" opacity="0.85"/>
+            <rect x="238" y="30" width="18" height="190" fill="#10151B" opacity="0.95"/>
+            <rect x="262" y="95" width="32" height="125" fill="#10151B" opacity="0.8"/>
+            <rect x="300" y="75" width="24" height="145" fill="#10151B" opacity="0.75"/>
+            <rect x="330" y="115" width="28" height="105" fill="#10151B" opacity="0.85"/>
+            <rect x="364" y="55" width="20" height="165" fill="#10151B" opacity="0.9"/>
+            <line x1="0" y1="220" x2="400" y2="220" stroke="#B08D57" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding-top:0;" id="contact">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Have a large or time-sensitive exchange? Call ahead and we'll have it ready.</h2>
+        <a href="tel:+971501517381" class="btn btn-primary">+971 50 151 7381</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <svg viewBox="0 0 120 80" width="28" height="19" fill="none" stroke="#B08D57" stroke-width="4.5" stroke-linecap="round">
+            <line x1="12" y1="22" x2="108" y2="22"/>
+            <path d="M60 22 L52 34 L68 34 Z" fill="#B08D57" stroke="none"/>
+            <line x1="24" y1="22" x2="24" y2="38"/>
+            <line x1="96" y1="22" x2="96" y2="42"/>
+            <path d="M12 38 A12 8 0 0 0 36 38"/>
+            <path d="M82 42 A14 9 0 0 0 110 42"/>
+          </svg>
+          <span class="name">MIZ<b>AN</b></span>
+        </div>
+        <p>Exchange, balanced. A Business Bay currency exchange counter for cash, transfers and corporate accounts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>BRANCH</h4>
+        <div>Business Bay, Dubai, UAE</div>
+        <div>Daily, 9:00–23:00</div>
+        <a href="tel:+971501517381">+971 50 151 7381</a>
+      </div>
+      <div class="foot-col">
+        <h4>MENU</h4>
+        <a href="#rates">Today's rates</a>
+        <a href="#services">Services</a>
+        <a href="#locations">Locations</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MIZAN EXCHANGE</span>
+      <span>RATES INDICATIVE — CONFIRM AT COUNTER</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
